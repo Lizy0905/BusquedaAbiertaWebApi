@@ -1,0 +1,48 @@
+﻿@model ML.Libro
+@{
+    ViewBag.Title = "Editorial";
+}
+
+<h2>Editoriales</h2>
+
+<br />
+<div class="col-3 col-sm-2">
+    @Html.ActionLink("Regresar al Menu", "GetAll", "Libro", new { @class = "btn btn-primary" })
+</div>
+<br />
+<br />
+<br />
+<div class="table-responsive">
+    <table class="table table-bordered" style="background-color: powderblue">
+        <thead class="">
+            <tr>
+                @*<th>Id</th>*@
+                <th>Titulo</th>
+                @*<th>IdE</th>*@
+                <th>Nombre de la Editorial</th>
+                <th>Ciudad</th>
+                <th></th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (ML.Libro libro in Model.Libros)
+            {
+                <tr>
+                    
+                    @*<td>@libro.IdLibro</td>*@
+                    <td>@libro.Titulo</td>
+                    @*<td>@libro.Editorial.IdEditorial</td>*@
+                    <td>@libro.Editorial.NombreEdit</td>
+                    <td>@libro.Editorial.Ciudad</td>
+                    @**@
+
+                    <td><a class="btn btn-danger"onclick="return confirm('¿Seguro que deseas eliminar este libro?')" href="@Url.Action("EditorialDelete", "Libro", new {IdLibro = libro.IdLibro, IdEditorial = libro.Editorial.IdEditorial })">Eliminar</a></td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+

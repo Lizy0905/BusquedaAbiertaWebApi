@@ -1,0 +1,46 @@
+﻿@model ML.Libro
+@{
+    ViewBag.Title = "Description";
+}
+
+@*<style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2.5cm; /* Establecer márgenes */
+    }
+    p {
+      font-size: 12px; /* Tamaño de la fuente */
+      line-height: 1.5; /* Interlineado */
+      text-align: justify; /* Justificar el texto */*@
+
+
+
+
+<h1>Descripcíon del libro</h1>
+<br />
+<div class="container">
+    <h2 style="margin-bottom: 20px">@Model.Titulo</h2>
+
+    @if (Model.Imagen == null && Model.Imagen == "")
+    {
+        <img src="https://previews.123rf.com/images/wektorygrafika/wektorygrafika1708/wektorygrafika170800094/83532899-libro-cerrado-de-dibujos-animados-icono-de-dise%C3%B1o-de-icono-de-s%C3%ADmbolo-hermosa-ilustraci%C3%B3n-aislada.jpg" class="card-img-top" width="200px" height="200px">
+
+    }
+    else
+    {
+        <img id="img" src=" data:image/*;base64,@Model.Imagen" width="200" height="250" />
+    }
+
+    <br />
+    <h4>@Model.Autor.NombreAutor @Model.Autor.ApellidoPaterno  @Model.Autor.ApellidoMaterno</h4>
+    <p style="font-family:Arial; text-align: justify; ">@Model.Descripcion</p>
+
+</div>
+
+<div class="row">
+    <div class="col-3 col-sm-2">
+        @Html.ActionLink("Regresar", "GetAll", "Libro", new { @class = "btn btn-primary" })
+    </div>
+
+</div>
+

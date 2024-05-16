@@ -1,0 +1,139 @@
+﻿@model  ML.Libro
+@{
+    ViewBag.Title = "AddLibro";
+}
+
+
+<h3>Agrega un Nuevo Libro</h3>
+<br />
+<br />
+@using (Html.BeginForm("AddLibro", "Administrador", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{@Html.HiddenFor(Model => Model.IdLibro)
+<div class="container">
+    <div class="row">
+        <div class="col-3 col-md-3">
+            @Html.LabelFor(model => model.Titulo, new { @class = "label-form" })
+            @Html.TextBoxFor(model => model.Titulo, new { @class = "form-control", placeholder = "Titulo del libro" })
+        </div>
+        <div class="col-3 col-md-3">
+
+            @Html.LabelFor(model => model.FechaPublic, new { @class = "label-form" })
+            @Html.TextBoxFor(model => model.FechaPublic, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+        </div>
+        <div class="col-3 col-md-3">
+
+            @Html.LabelFor(model => model.Descripcion, new { @class = "label-form" })
+            @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control" , type= "text"})
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        @{
+            var autores = Model.Autor.Autores.Select(a => new
+            {
+                Id = a.IdAutor,
+                NombreCompleto = $"{a.NombreAutor} {a.ApellidoPaterno} {a.ApellidoMaterno}"
+            });
+        }
+        <div class="col-3 col-md-3">
+            @Html.LabelFor(model => model.Autor.NombreAutor, new { @class = "label-form" })
+            @Html.DropDownListFor(model => model.Autor.IdAutor, new SelectList(autores, "Id", "NombreCompleto"), "Selecciona una opcion", new { @class = "form-control" })
+
+            @*@Html.TextBoxFor(model => model.Autor.IdAutor, new { @class = "form-control", placeholder = "Nombre de Autor" })*@
+        </div>
+
+        <div class="col-3 col-md-3">
+            @Html.LabelFor(model => model.Editorial.NombreEdit, new { @class = "label-form", placeholder = "Nombre de la Editorial" })
+            @Html.DropDownListFor(model => model.Editorial.IdEditorial, new SelectList(Model.Editorial.Editoriales, "IdEditorial", "NombreEdit"), "Selecciona una opcion", new { @class = "form-control" })
+        </div>
+
+        @*<div class="col-3 col-md-3">
+                @Html.LabelFor(model => model.Autor.ApellidoPaterno, new { @class = "label-form" })
+                @Html.TextBoxFor(model => model.Autor.ApellidoPaterno, new { @class = "form-control", placeholder = "Apellido Paterno" })
+            </div>
+            <div class="col-3 col-md-3">
+                @Html.LabelFor(model => model.Autor.ApellidoMaterno, new { @class = "label-form" })
+                @Html.TextBoxFor(model => model.Autor.ApellidoMaterno, new { @class = "form-control", placeholder = "Apellido Materno" })
+            </div>*@
+    </div>
+    @*<br />
+        <div class="row">
+            <div class="col-3 col-md-3">
+                @Html.LabelFor(model => model.Editorial.NombreEdit, new { @class = "label-form", placeholder = "Nombre de la Editorial" })
+                @Html.TextBoxFor(model => model.Editorial.NombreEdit, new { @class = "form-control", placeholder = "NombreEditorial" })
+            </div>
+            <div class="col-3 col-md-3">
+                @Html.LabelFor(model => model.Editorial.Ciudad, new { @class = "label-form", placeholder = "Ciudad" })
+                @Html.TextBoxFor(model => model.Editorial.Ciudad, new { @class = "form-control", placeholder = "Ciudad" })
+            </div>
+        </div>*@
+    <br />
+    <div class="row">
+        <div class="col-3 col-sm-3">
+
+            @if (Model.Imagen == null || Model.Imagen == "")
+            {
+                <img id="img" src="https://previews.123rf.com/images/wektorygrafika/wektorygrafika1708/wektorygrafika170800094/83532899-libro-cerrado-de-dibujos-animados-icono-de-dise%C3%B1o-de-icono-de-s%C3%ADmbolo-hermosa-ilustraci%C3%B3n-aislada.jpg" class="card-img-top" width="200px" height="250px" style="margin-bottom: 20px"  />
+            
+                <input class="form-control" type="file" id="Imagen" name="Imagen" onchange="ValidarImagen(event.target.files),VisualizarImagen(this)" /> }
+            else
+            {
+                <img id="img" src="data:image/*;base64,@Model.Imagen" width="200" height="250" style="margin-bottom: 20px" />
+                <br />
+                <input class="form-control" type="file" id="Imagen" name="Imagen" onchange="ValidarImagen(event.target.files),VisualizarImagen(this)" />
+            }
+
+
+
+
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-2 col-sm-2">
+            <button class="btn btn-primary">Guardar</button>
+        </div>
+    </div>
+</div>
+}
+
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+
+    function ValidarImagen(files) {
+        var extensionesPermitidas = ['jpeg', 'jpg', 'png'];
+        console.log(document.getElementById('Imagen').files);
+        var extensionArchivo = files[0].name.split('.').pop().toLowerCase();
+        var isValidFile = false;
+
+        for (var index in extensionesPermitidas) {
+            if (extensionArchivo == extensionesPermitidas[index]) {
+                isValidFile = true;
+                break;
+            }
+        }
+        if (!isValidFile) {
+            alert('Las extensiones permitidas son: *.' + extensionesPermitidas.join(', * .'));
+            $("Imagen").val("")
+        }
+        console.log(document.getElementById('Imagen'));
+        return isValidFile;
+    }
+
+
+    function VisualizarImagen(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#img').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+
+</script>
+
+

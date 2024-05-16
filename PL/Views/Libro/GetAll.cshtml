@@ -1,0 +1,219 @@
+﻿@model ML.Libro
+@{
+    ViewBag.Title = "GetAll";
+}
+
+<h2 style="font-family: 'Times New Roman', Times, serif">Libros</h2>
+<br />
+<h4 style="font-family: 'Times New Roman', Times, serif">Busqueda rápida</h4>
+<br />
+<br />
+<div class="row">
+    <div class="col-md-2">
+        <button id="mostrarTitulo" type="button" class="btn btn-info">Titulo</button>
+    </div>
+    <div class="col-md-2">
+        <button id="mostrarAutor" type="button" class="btn btn-info">Autor</button>
+    </div>
+    <div class="col-md-2">
+        <button id="mostrarFecha" type="button" class="btn btn-info">Fecha</button>
+    </div>
+    <div class="col-md-2">
+        <button id="mostrarEditorial" type="button" class="btn btn-info">Editorial</button>
+    </div>
+    <div class="col-md-2">
+        <button id="mostrarAF" type="button" class="btn btn-info">Autor y Fecha</button>
+    </div>
+</div>
+<!--Display codigo -->
+<br />
+
+@using (Html.BeginForm("GetAll", "Libro", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    <div id="nombre" style=" display: none">
+        <div class="row">
+            <label style="font-family: 'Times New Roman'Times, serif;" class="col-2 col-sm-2 control-label">Busqueda por Autor</label>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                @Html.TextBoxFor(model => model.Autor.NombreAutor, new { @class = "form-control col-1 col-sm-1", placeholder = "Nombre Autor", style = "margin right: 10px;", id = "miId", autocomplete = "off" })
+            </div>
+            <div class="col-2">
+                @Html.TextBoxFor(model => model.Autor.ApellidoPaterno, new { @class = "form-control col-1 col-sm-1", placeholder = "Apellido Paterno", id = "apeP", autocomplete = "off" })
+            </div>
+            <div class="col-2" id="ApM" style="margin-right: 10px">
+                @Html.TextBoxFor(model => model.Autor.ApellidoMaterno, new { @class = "form-control col-1 col-sm-1", placeholder = "Apellido Materno", id = "apeM", autocomplete = "off" })
+            </div>
+
+            <div class="col-1" id="FechaT">
+                @Html.TextBoxFor(model => model.FechaPublicacion, new { @class = "form-control", placeholder = "1900", id = "fechaN", autocomplete = "off" })
+                @*@Html.ValidationMessageFor(model => model.FechaPublicacion)*@
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px">
+            <div class="col-2">
+                <div id="btnA" style="display: none; align-items: center" class="col-sm-6 col-6">
+                    <button type="submit">Consultar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    //, "{0:yyyy-MM-dd}" , new { value = Model.FechaPublic.ToString("yyyy") }
+    <div id="fecha" style=" display: none">
+        <label class="control-label">Busqueda por Fecha de publicación</label>
+        @Html.TextBoxFor(model => model.FechaPublicacionD, new { @class = "form-control", placeholder = "1900", id = "Fecha", autocomplete = "off" })
+        <button type="submit" style="margin-top: 20px">Consultar</button>
+    </div>
+    <div id="titulo" style=" display: none">
+        <label class="control-label">Titulo del Libro</label>
+        @Html.TextBoxFor(model => model.Titulo, new { @class = "form-control", placeholder = "Titulo del Libro", autocomplete = "off", id = "miTitulo" })
+        <button type="submit" style="margin-top: 20px">Consultar</button>
+    </div>
+    <div id="editorial" style=" display: none">
+        <label class="control-label">Busqueda por Editorial</label>
+        @Html.TextBoxFor(model => model.Editorial.NombreEdit, new { @class = "form-control", placeholder = "Nombre Editorial", id = "miEdi", autocomplete = "off" })
+        <button type="submit" style="margin-top: 20px">Consultar</button>
+    </div>
+}
+<br />
+<!---->
+
+@if (Model.Libros != null && Model.Libros.Count > 0)
+{
+    <div class="container">
+        <div class="row">
+            @foreach (ML.Libro libro in Model.Libros)
+            {
+                <div class="col-sm-4 mb-3 ">
+                    <div class="card" style="width: 20rem;">
+                        <h5 class="card-title"><strong>@libro.Titulo</strong></h5>
+                        @if (libro.Imagen == "" || libro.Imagen == null)
+                        {
+                            <img src="https://previews.123rf.com/images/wektorygrafika/wektorygrafika1708/wektorygrafika170800094/83532899-libro-cerrado-de-dibujos-animados-icono-de-dise%C3%B1o-de-icono-de-s%C3%ADmbolo-hermosa-ilustraci%C3%B3n-aislada.jpg" class="card-img-top" width="200px" height="200px">
+                        }
+                        else
+                        {
+                            <img id="img" src=" data:image/*;base64,@libro.Imagen" width="200" height="250" />
+                        }
+                        <div class="card-body">
+                            <p class="card-text">@libro.Autor.NombreAutor, @libro.Autor.ApellidoPaterno, @libro.Autor.ApellidoMaterno </p>
+                            <p class="card-text">@libro.FechaPublic.ToString("dd 'de' MMMM 'de' yyyy")</p>
+                            <p class="card-text">@libro.Editorial.NombreEdit, @libro.Editorial.Ciudad</p>
+                        </div>
+
+                        <div class="card-body ">
+                            <a href="@Url.Action("Description", "Libro", new { IdLibro = libro.IdLibro })">Detalles del libro</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            <br />
+        </div>
+        <br />
+    </div>
+}
+else
+{
+    <h1>Vacio</h1>
+    <br />
+    <br />
+    <br />
+    <p>No hay un libro que coincida con su busqueda, intente nuevamente.</p>
+}
+
+<script>
+    document.getElementById('mostrarAutor').addEventListener('click',
+        function () {
+            document.getElementById('nombre').style.display = 'block';
+            document.getElementById('btnA').style.display = 'block';
+            document.getElementById('fecha').style.display = 'none';
+            document.getElementById('titulo').style.display = 'none';
+            document.getElementById('editorial').style.display = 'none';
+            document.getElementById('FechaT').style.display = 'none';
+            document.getElementById('miId').value = '';
+            document.getElementById('apeP').value = '';
+            document.getElementById('apeM').value = '';
+            document.getElementById('Fecha').value = '';
+            document.getElementById('fechaN').value = '';
+            document.getElementById('miEdi').value = '';
+            document.getElementById('miTitulo').value = '';
+
+
+        });
+
+    document.getElementById('mostrarFecha').addEventListener('click',
+        function () {
+            document.getElementById('nombre').style.display = 'none';
+            document.getElementById('btnA').style.display = 'none';
+            document.getElementById('fecha').style.display = 'block';
+            document.getElementById('titulo').style.display = 'none';
+            document.getElementById('editorial').style.display = 'none';
+            document.getElementById('FechaT').style.display = 'none';
+            document.getElementById('miId').value = '';
+            document.getElementById('apeP').value = '';
+            document.getElementById('apeM').value = '';
+            document.getElementById('Fecha').value = '';
+            document.getElementById('fechaN').value = '';
+            document.getElementById('miEdi').value = '';
+            document.getElementById('miTitulo').value = '';
+
+        });
+
+    document.getElementById('mostrarTitulo').addEventListener('click',
+        function () {
+            document.getElementById('nombre').style.display = 'none';
+            document.getElementById('btnA').style.display = 'none';
+            document.getElementById('fecha').style.display = 'none';
+            document.getElementById('titulo').style.display = 'block';
+            document.getElementById('editorial').style.display = 'none';
+            document.getElementById('FechaT').style.display = 'none';
+            document.getElementById('miId').value = '';
+            document.getElementById('apeP').value = '';
+            document.getElementById('apeM').value = '';
+            document.getElementById('Fecha').value = '';
+            document.getElementById('fechaN').value = '';
+            document.getElementById('miEdi').value = '';
+            document.getElementById('miTitulo').value = '';
+
+        });
+
+    document.getElementById('mostrarEditorial').addEventListener('click',
+        function () {
+            document.getElementById('nombre').style.display = 'none';
+            document.getElementById('btnA').style.display = 'none';
+            document.getElementById('fecha').style.display = 'none';
+            document.getElementById('titulo').style.display = 'none';
+            document.getElementById('editorial').style.display = 'block';
+            document.getElementById('FechaT').style.display = 'none';
+            document.getElementById('miTitulo').value = '';
+            document.getElementById('miId').value = '';
+            document.getElementById('apeP').value = '';
+            document.getElementById('apeM').value = '';
+            document.getElementById('Fecha').value = '';
+            document.getElementById('fechaN').value = '';
+            document.getElementById('miEdi').value = '';
+        });
+
+    document.getElementById('mostrarAF').addEventListener('click',
+        function () {
+            document.getElementById('nombre').style.display = 'block';
+            document.getElementById('btnA').style.display = 'block';
+            document.getElementById('fecha').style.display = 'none';
+            document.getElementById('titulo').style.display = 'none';
+            document.getElementById('editorial').style.display = 'none';
+            document.getElementById('FechaT').style.display = 'block';
+            document.getElementById('ApM').style.display = 'none';
+            document.getElementById('miTitulo').value = '';
+            document.getElementById('miId').value = '';
+            document.getElementById('apeP').value = '';
+            document.getElementById('apeM').value = '';
+            document.getElementById('Fecha').value = '';
+            document.getElementById('fechaN').value = '';
+            document.getElementById('miEdi').value = '';
+
+        });
+
+
+</script>
+

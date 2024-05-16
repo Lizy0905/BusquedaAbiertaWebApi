@@ -1,0 +1,590 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PVillaBusquedaLibrosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Autor">
+          <Key>
+            <PropertyRef Name="IdAutor" />
+          </Key>
+          <Property Name="IdAutor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ApellidoPaterno" Type="varchar" MaxLength="50" />
+          <Property Name="ApellidoMaterno" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Editorial">
+          <Key>
+            <PropertyRef Name="IdEditorial" />
+          </Key>
+          <Property Name="IdEditorial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ciudad" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Libro">
+          <Key>
+            <PropertyRef Name="IdLibro" />
+          </Key>
+          <Property Name="IdLibro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Titulo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FechaPublic" Type="date" />
+          <Property Name="IdAutor" Type="int" />
+          <Property Name="IdEditorial" Type="int" />
+          <Property Name="Imagen" Type="varchar(max)" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <Association Name="FK__Libro__IdAutor__145C0A3F">
+          <End Role="Autor" Type="Self.Autor" Multiplicity="0..1" />
+          <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Autor">
+              <PropertyRef Name="IdAutor" />
+            </Principal>
+            <Dependent Role="Libro">
+              <PropertyRef Name="IdAutor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Libro__IdEditori__15502E78">
+          <End Role="Editorial" Type="Self.Editorial" Multiplicity="0..1" />
+          <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editorial">
+              <PropertyRef Name="IdEditorial" />
+            </Principal>
+            <Dependent Role="Libro">
+              <PropertyRef Name="IdEditorial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AutorGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="EditorialGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllAutor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllBusFechaPub" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FechaPublic" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllBusFechaPubAutor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NombreAutor" Type="varchar" Mode="In" />
+          <Parameter Name="AP" Type="varchar" Mode="In" />
+          <Parameter Name="FechaPublic" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllBusqAutor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NombreAutor" Type="varchar" Mode="In" />
+          <Parameter Name="AutorAP" Type="varchar" Mode="In" />
+          <Parameter Name="AutorAM" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetAllBusqEditorial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EditorialN" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetAllBusqTitulo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Titulo" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetAllEditorial" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="LibroAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Titulo" Type="varchar" Mode="In" />
+          <Parameter Name="FechaPublic" Type="date" Mode="In" />
+          <Parameter Name="IdAutor" Type="int" Mode="In" />
+          <Parameter Name="IdEditorial" Type="int" Mode="In" />
+          <Parameter Name="Imagen" Type="varchar(max)" Mode="In" />
+          <Parameter Name="Descripticion" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="LibroDeleteAutor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdLibro" Type="int" Mode="In" />
+          <Parameter Name="IdAutor" Type="int" Mode="In" />
+          <Parameter Name="IdEditorial" Type="int" Mode="In" />
+        </Function>
+        <Function Name="LibroGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="LibroGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdLibro" Type="int" Mode="In" />
+        </Function>
+        <Function Name="LibroUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Titulo" Type="varchar" Mode="In" />
+          <Parameter Name="FechaPublic" Type="date" Mode="In" />
+          <Parameter Name="IdEditorial" Type="int" Mode="In" />
+          <Parameter Name="IdAutor" Type="int" Mode="In" />
+          <Parameter Name="IdLibro" Type="int" Mode="In" />
+          <Parameter Name="Imagen" Type="varchar(max)" Mode="In" />
+          <Parameter Name="Descripcion" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="PVillaBusquedaLibrosModelStoreContainer">
+          <EntitySet Name="Autor" EntityType="Self.Autor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Editorial" EntityType="Self.Editorial" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Libro" EntityType="Self.Libro" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Libro__IdAutor__145C0A3F" Association="Self.FK__Libro__IdAutor__145C0A3F">
+            <End Role="Autor" EntitySet="Autor" />
+            <End Role="Libro" EntitySet="Libro" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Libro__IdEditori__15502E78" Association="Self.FK__Libro__IdEditori__15502E78">
+            <End Role="Editorial" EntitySet="Editorial" />
+            <End Role="Libro" EntitySet="Libro" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PVillaBusquedaLibrosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Autor">
+          <Key>
+            <PropertyRef Name="IdAutor" />
+          </Key>
+          <Property Name="IdAutor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ApellidoPaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Libro" Relationship="Self.FK__Libro__IdAutor__145C0A3F" FromRole="Autor" ToRole="Libro" />
+        </EntityType>
+        <EntityType Name="Editorial">
+          <Key>
+            <PropertyRef Name="IdEditorial" />
+          </Key>
+          <Property Name="IdEditorial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Ciudad" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Libro" Relationship="Self.FK__Libro__IdEditori__15502E78" FromRole="Editorial" ToRole="Libro" />
+        </EntityType>
+        <EntityType Name="Libro">
+          <Key>
+            <PropertyRef Name="IdLibro" />
+          </Key>
+          <Property Name="IdLibro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Titulo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaPublic" Type="DateTime" Precision="0" />
+          <Property Name="IdAutor" Type="Int32" />
+          <Property Name="IdEditorial" Type="Int32" />
+          <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Autor" Relationship="Self.FK__Libro__IdAutor__145C0A3F" FromRole="Libro" ToRole="Autor" />
+          <NavigationProperty Name="Editorial" Relationship="Self.FK__Libro__IdEditori__15502E78" FromRole="Libro" ToRole="Editorial" />
+          <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__Libro__IdAutor__145C0A3F">
+          <End Role="Autor" Type="Self.Autor" Multiplicity="0..1" />
+          <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Autor">
+              <PropertyRef Name="IdAutor" />
+            </Principal>
+            <Dependent Role="Libro">
+              <PropertyRef Name="IdAutor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Libro__IdEditori__15502E78">
+          <End Role="Editorial" Type="Self.Editorial" Multiplicity="0..1" />
+          <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Editorial">
+              <PropertyRef Name="IdEditorial" />
+            </Principal>
+            <Dependent Role="Libro">
+              <PropertyRef Name="IdEditorial" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PVillaBusquedaLibrosEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Autor" EntityType="Self.Autor" />
+          <EntitySet Name="Editorial" EntityType="Self.Editorial" />
+          <EntitySet Name="Libro" EntityType="Self.Libro" />
+          <AssociationSet Name="FK__Libro__IdAutor__145C0A3F" Association="Self.FK__Libro__IdAutor__145C0A3F">
+            <End Role="Autor" EntitySet="Autor" />
+            <End Role="Libro" EntitySet="Libro" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Libro__IdEditori__15502E78" Association="Self.FK__Libro__IdEditori__15502E78">
+            <End Role="Editorial" EntitySet="Editorial" />
+            <End Role="Libro" EntitySet="Libro" />
+          </AssociationSet>
+          <FunctionImport Name="AutorGetAll" ReturnType="Collection(PVillaBusquedaLibrosModel.AutorGetAll_Result)" />
+          <FunctionImport Name="EditorialGetAll" ReturnType="Collection(PVillaBusquedaLibrosModel.EditorialGetAll_Result)" />
+          <FunctionImport Name="GetAllAutor" ReturnType="Collection(PVillaBusquedaLibrosModel.GetAllAutor_Result)" />
+          <FunctionImport Name="GetAllBusFechaPub" ReturnType="Collection(PVillaBusquedaLibrosModel.GetAllBusFechaPub_Result)">
+          <Parameter Name="FechaPublic" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllBusqAutor" ReturnType="Collection(PVillaBusquedaLibrosModel.GetAllBusqAutor_Result)">
+            <Parameter Name="NombreAutor" Mode="In" Type="String" />
+            <Parameter Name="AutorAP" Mode="In" Type="String" />
+            <Parameter Name="AutorAM" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllBusqTitulo" ReturnType="Collection(PVillaBusquedaLibrosModel.GetAllBusqTitulo_Result)">
+          <Parameter Name="Titulo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllEditorial" ReturnType="Collection(PVillaBusquedaLibrosModel.GetAllEditorial_Result)" />
+          <FunctionImport Name="LibroDeleteAutor">
+            <Parameter Name="IdLibro" Mode="In" Type="Int32" />
+            <Parameter Name="IdAutor" Mode="In" Type="Int32" />
+            <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="LibroGetAll" ReturnType="Collection(PVillaBusquedaLibrosModel.LibroGetAll_Result)" />
+          <FunctionImport Name="LibroGetById" ReturnType="Collection(PVillaBusquedaLibrosModel.LibroGetById_Result)">
+          <Parameter Name="IdLibro" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="LibroAdd">
+            <Parameter Name="Titulo" Mode="In" Type="String" />
+            <Parameter Name="FechaPublic" Mode="In" Type="DateTime" />
+            <Parameter Name="IdAutor" Mode="In" Type="Int32" />
+            <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
+            <Parameter Name="Imagen" Mode="In" Type="String" />
+            <Parameter Name="Descripticion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="LibroUpdate">
+            <Parameter Name="Titulo" Mode="In" Type="String" />
+            <Parameter Name="FechaPublic" Mode="In" Type="DateTime" />
+            <Parameter Name="IdEditorial" Mode="In" Type="Int32" />
+            <Parameter Name="IdAutor" Mode="In" Type="Int32" />
+            <Parameter Name="IdLibro" Mode="In" Type="Int32" />
+            <Parameter Name="Imagen" Mode="In" Type="String" />
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllBusqEditorial" ReturnType="Collection(PVillaBusquedaLibrosModel.GetAllBusqEditorial_Result)">
+          <Parameter Name="EditorialN" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllBusFechaPubAutor" ReturnType="Collection(PVillaBusquedaLibrosModel.GetAllBusFechaPubAutor_Result)">
+            <Parameter Name="NombreAutor" Mode="In" Type="String" />
+            <Parameter Name="AP" Mode="In" Type="String" />
+            <Parameter Name="FechaPublic" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="AutorGetAll_Result">
+          <Property Type="Int32" Name="IdAutor" Nullable="false" />
+          <Property Type="Int32" Name="IdLibro" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="EditorialGetAll_Result">
+          <Property Type="Int32" Name="IdEditorial" Nullable="false" />
+          <Property Type="Int32" Name="IdLibro" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ciudad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetAllAutor_Result">
+          <Property Type="Int32" Name="IdAutor" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetAllBusFechaPub_Result">
+          <Property Type="Int32" Name="IdLibro" Nullable="false" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="FechaPublic" Nullable="true" />
+          <Property Type="Int32" Name="IdAutor" Nullable="true" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="true" />
+          <Property Type="String" Name="NombreEdit" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Ciudad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="NombreAutor" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Imagen" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllBusqAutor_Result">
+          <Property Type="Int32" Name="IdLibro" Nullable="false" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="FechaPublic" Nullable="true" />
+          <Property Type="Int32" Name="IdAutor" Nullable="true" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="true" />
+          <Property Type="String" Name="NombreEdit" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Ciudad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="NombreAutor" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Imagen" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllBusqTitulo_Result">
+          <Property Type="Int32" Name="IdLibro" Nullable="false" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="FechaPublic" Nullable="true" />
+          <Property Type="Int32" Name="IdAutor" Nullable="true" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="true" />
+          <Property Type="String" Name="NombreEdit" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Ciudad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="NombreAutor" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Imagen" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllEditorial_Result">
+          <Property Type="Int32" Name="IdEditorial" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Ciudad" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="LibroGetAll_Result">
+          <Property Type="Int32" Name="IdLibro" Nullable="false" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="FechaPublic" Nullable="true" />
+          <Property Type="Int32" Name="IdAutor" Nullable="true" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="true" />
+          <Property Type="String" Name="NombreEdit" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Ciudad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="NombreAutor" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Imagen" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="LibroGetById_Result">
+          <Property Type="Int32" Name="IdLibro" Nullable="false" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="FechaPublic" Nullable="true" />
+          <Property Type="Int32" Name="IdAutor" Nullable="true" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="true" />
+          <Property Type="String" Name="NombreEdit" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Ciudad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="NombreAutor" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Imagen" Nullable="true" />
+          <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="GetAllBusqEditorial_Result">
+          <Property Type="Int32" Name="IdLibro" Nullable="false" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="FechaPublic" Nullable="true" />
+          <Property Type="Int32" Name="IdAutor" Nullable="true" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="true" />
+          <Property Type="String" Name="NombreEdit" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Ciudad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="NombreAutor" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Imagen" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllBusFechaPubAutor_Result">
+          <Property Type="Int32" Name="IdLibro" Nullable="false" />
+          <Property Type="String" Name="Titulo" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="FechaPublic" Nullable="true" />
+          <Property Type="Int32" Name="IdAutor" Nullable="true" />
+          <Property Type="Int32" Name="IdEditorial" Nullable="true" />
+          <Property Type="String" Name="NombreEdit" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Ciudad" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="NombreAutor" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Imagen" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PVillaBusquedaLibrosModelStoreContainer" CdmEntityContainer="PVillaBusquedaLibrosEntities">
+          <EntitySetMapping Name="Autor">
+            <EntityTypeMapping TypeName="PVillaBusquedaLibrosModel.Autor">
+              <MappingFragment StoreEntitySet="Autor">
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Editorial">
+            <EntityTypeMapping TypeName="PVillaBusquedaLibrosModel.Editorial">
+              <MappingFragment StoreEntitySet="Editorial">
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Libro">
+            <EntityTypeMapping TypeName="PVillaBusquedaLibrosModel.Libro">
+              <MappingFragment StoreEntitySet="Libro">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="FechaPublic" ColumnName="FechaPublic" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AutorGetAll" FunctionName="PVillaBusquedaLibrosModel.Store.AutorGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PVillaBusquedaLibrosModel.AutorGetAll_Result">
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="EditorialGetAll" FunctionName="PVillaBusquedaLibrosModel.Store.EditorialGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PVillaBusquedaLibrosModel.EditorialGetAll_Result">
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllAutor" FunctionName="PVillaBusquedaLibrosModel.Store.GetAllAutor">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PVillaBusquedaLibrosModel.GetAllAutor_Result">
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllBusFechaPub" FunctionName="PVillaBusquedaLibrosModel.Store.GetAllBusFechaPub">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PVillaBusquedaLibrosModel.GetAllBusFechaPub_Result">
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="FechaPublic" ColumnName="FechaPublic" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="NombreEdit" ColumnName="NombreEdit" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+                <ScalarProperty Name="NombreAutor" ColumnName="NombreAutor" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllBusqAutor" FunctionName="PVillaBusquedaLibrosModel.Store.GetAllBusqAutor">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PVillaBusquedaLibrosModel.GetAllBusqAutor_Result">
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="FechaPublic" ColumnName="FechaPublic" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="NombreEdit" ColumnName="NombreEdit" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+                <ScalarProperty Name="NombreAutor" ColumnName="NombreAutor" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllBusqTitulo" FunctionName="PVillaBusquedaLibrosModel.Store.GetAllBusqTitulo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PVillaBusquedaLibrosModel.GetAllBusqTitulo_Result">
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="FechaPublic" ColumnName="FechaPublic" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="NombreEdit" ColumnName="NombreEdit" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+                <ScalarProperty Name="NombreAutor" ColumnName="NombreAutor" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllEditorial" FunctionName="PVillaBusquedaLibrosModel.Store.GetAllEditorial">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PVillaBusquedaLibrosModel.GetAllEditorial_Result">
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="LibroDeleteAutor" FunctionName="PVillaBusquedaLibrosModel.Store.LibroDeleteAutor" />
+          <FunctionImportMapping FunctionImportName="LibroGetAll" FunctionName="PVillaBusquedaLibrosModel.Store.LibroGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PVillaBusquedaLibrosModel.LibroGetAll_Result">
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="FechaPublic" ColumnName="FechaPublic" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="NombreEdit" ColumnName="NombreEdit" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+                <ScalarProperty Name="NombreAutor" ColumnName="NombreAutor" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="LibroGetById" FunctionName="PVillaBusquedaLibrosModel.Store.LibroGetById">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PVillaBusquedaLibrosModel.LibroGetById_Result">
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="FechaPublic" ColumnName="FechaPublic" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="NombreEdit" ColumnName="NombreEdit" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+                <ScalarProperty Name="NombreAutor" ColumnName="NombreAutor" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="LibroAdd" FunctionName="PVillaBusquedaLibrosModel.Store.LibroAdd" />
+          <FunctionImportMapping FunctionImportName="LibroUpdate" FunctionName="PVillaBusquedaLibrosModel.Store.LibroUpdate" />
+          <FunctionImportMapping FunctionImportName="GetAllBusqEditorial" FunctionName="PVillaBusquedaLibrosModel.Store.GetAllBusqEditorial">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PVillaBusquedaLibrosModel.GetAllBusqEditorial_Result">
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="FechaPublic" ColumnName="FechaPublic" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="NombreEdit" ColumnName="NombreEdit" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+                <ScalarProperty Name="NombreAutor" ColumnName="NombreAutor" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllBusFechaPubAutor" FunctionName="PVillaBusquedaLibrosModel.Store.GetAllBusFechaPubAutor">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PVillaBusquedaLibrosModel.GetAllBusFechaPubAutor_Result">
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="FechaPublic" ColumnName="FechaPublic" />
+                <ScalarProperty Name="IdAutor" ColumnName="IdAutor" />
+                <ScalarProperty Name="IdEditorial" ColumnName="IdEditorial" />
+                <ScalarProperty Name="NombreEdit" ColumnName="NombreEdit" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+                <ScalarProperty Name="NombreAutor" ColumnName="NombreAutor" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
